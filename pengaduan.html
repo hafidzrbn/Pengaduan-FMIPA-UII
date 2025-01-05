@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <link rel="stylesheet" href="style_kost_ijo.css" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sistem Pengaduan FMIPA UII</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <nav>
+      <ul>
+        <li><a href="index.html">Beranda</a></li>
+        <li><a href="panduan.html">Panduan</a></li>
+        <li><a href="pengaduan.html">Ajukan Pengaduan</a></li>
+        <li><a href="informasi.html">Informasi</a></li>
+      </ul>
+    </nav>
+    <header>
+      <div class="jumbotron">
+        <h1>Pengaduan FMIPA UII</h1>
+      </div>
+    </header>
+    <main>
+      <form id="pengaduanForm">
+        <label for="nama">Nama/Inisial:</label>
+        <input type="text" id="nama" name="nama" required /><br />
+
+        <label for="nim">Nomor Induk Mahasiswa (NIM):</label>
+        <input type="text" id="nim" name="nim" required /><br />
+
+        <label for="HP">Nomor HP:</label>
+        <input type="text" id="HP" name="HP" required /><br />
+
+        <label for="aduan">Pengaduan:</label>
+        <input type="text" id="aduan" name="aduan" required /><br />
+
+        <button type="button" onclick="submitForm()">Ajukan Pengaduan</button>
+      </form>
+    </main>
+    <script>
+      function submitForm() {
+        const form = document.getElementById("pengaduanForm");
+        const formData = new FormData(form);
+
+        const scriptURL = "https://script.google.com/macros/s/AKfycbxyFAk1ZDmpIBfSUl6_cbfbUPW8gi1RPV9xXnZQzCEqRoLr2oNvCfO5j87yi2ROVGam/exec";
+
+        fetch(scriptURL, {
+          method: "POST",
+          body: formData,
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            const message = data.result === "success" ? "Pengaduan Anda berhasil dikirim." : "Terjadi kesalahan. Silakan coba lagi.";
+            alert(message); // Tampilkan pesan dalam bentuk alert
+            if (data.result === "success") form.reset(); // Kosongkan form hanya jika berhasil
+          })
+          .catch((error) => {
+            alert("Gagal mengirim pengaduan. Silakan cek koneksi Anda.");
+            console.error("Error!", error);
+          });
+      }
+    </script>
+  </body>
+</html>
